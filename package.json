@@ -9,5 +9,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
+  },
+  "scripts": {
+    "start": "node src/core/app.mjs",
+    "dev": "nodemon src/core/app.mjs"
   }
 }
