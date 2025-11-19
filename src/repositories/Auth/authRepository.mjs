@@ -1,4 +1,4 @@
-import { query } from '../db.mjs';
+import { query } from '../../db/index.mjs';
 
 export const findUserByEmail = async (email) => {
 

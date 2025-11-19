@@ -1,4 +1,4 @@
-import { findUserByEmail, createUser } from '../repository/authRepository.mjs';
+import { findUserByEmail, createUser } from '../../repositories/Auth/authRepository.mjs';
 import bcrypt from 'bcrypt';
 
 export const registerService = async ({ name, lastName, nid, age, phoneNumber, email, password }) => {
