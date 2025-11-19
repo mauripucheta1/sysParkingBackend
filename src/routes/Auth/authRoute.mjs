@@ -1,15 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const { body } = require('express-validator');
-const authController = require('../controllers/authController');
+import { Router } from 'express';
+import { registerController } from '../controllers/authController.mjs';
 
-router.post('/register',
-  [
-    body('nombre').notEmpty().withMessage('Nombre requerido'),
-    body('email').isEmail().withMessage('Email inválido'),
-    body('password').isLength({ min: 6 }).withMessage('Min length 6')
-  ],
-  authController.register
-);
+const router = Router();
 
-module.exports = router;
+router.post('/register', registerController);
+
+export default router;
