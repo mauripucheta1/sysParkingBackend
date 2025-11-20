@@ -1,5 +1,6 @@
 import { findUserByEmail, createUser } from '../../repositories/Auth/authRepository.mjs';
 import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
 
 export const registerService = async ({ name, lastName, nid, age, phoneNumber, email, password }) => {
 
@@ -84,13 +85,23 @@ export const loginService = async ({ email, password }) => {
     };
 
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id_user, email: user.email, role: user.id_rol },
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
     );
 
     delete user.user_password;
 
-    return { ...user, token };
+    return {
+        id: user.id_user,
+        dni: user.dni,
+        name: user.user_name,
+        lastName: user.user_last_name,
+        age: user.age,
+        email: user.email,
+        phoneNumber: user.phone_number,
+        role: user.id_rol,
+        token
+    };
 
 };
