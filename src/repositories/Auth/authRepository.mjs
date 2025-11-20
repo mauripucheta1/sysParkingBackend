@@ -2,9 +2,18 @@ import { query } from '../../db/index.mjs';
 
 export const findUserByEmail = async (email) => {
 
-  const sql = 'SELECT * FROM users WHERE email = $1';
-  const { rows } = await query(sql, [email]);
-  return rows[0];
+  const query = `
+    SELECT id, dni, user_name, user_last_name, age, email, user_password, phone_number, id_rol 
+    FROM users 
+    WHERE email = $1
+    LIMIT 1
+  `;
+
+  const values = [email];
+
+  const result = await pool.query(query, values);
+
+  return result.rows[0] || null;
 
 };
 

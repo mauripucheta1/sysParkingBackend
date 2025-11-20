@@ -63,6 +63,34 @@ export const loginService = async ({ email, password }) => {
         throw error;
     };
 
-    
+    email = email.toLowerCase().trim();
+
+    const user = await findUserByEmail(email);
+
+    if (!user) {
+        const error = new Error("Validation error");
+        error.status = 400;
+        error.errors = { email: "Email not found." };
+        throw error;
+    };
+
+    const isValidPassword = await bcrypt.compare(password, user.user_password);
+
+    if (!isValidPassword) {
+        const error = new Error("Validation error");
+        error.status = 400;
+        error.errors = { password: "Incorrect username and/or password." };
+        throw error;
+    };
+
+    const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
+
+    delete user.user_password;
+
+    return { ...user, token };
 
 };

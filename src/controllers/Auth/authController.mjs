@@ -1,4 +1,4 @@
-import { registerService } from '../../services/Auth/authService.mjs';
+import { registerService, loginService } from '../../services/Auth/authService.mjs';
 
 export const registerController = async (req, res, next) => {
 
@@ -29,7 +29,7 @@ export const loginController = async (req, res, next) => {
 
     const result = await loginService({  email, password });
 
-    res.status(201).json({
+    res.status(200).json({
       message: 'User successfully authenticated.',
       usuario: result
     });
