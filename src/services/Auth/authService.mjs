@@ -29,14 +29,16 @@ export const registerService = async ({ name, lastName, nid, age, phoneNumber, e
     const existing = await findUserByEmail(email);
 
     if (existing) {
-        const error = new Error('The email is already registered.');
+        const error = new Error("Validation error");
         error.status = 400;
+        error.errors = { email: "The email is already registered." };
         throw error;
     };
 
     if (!password || password.length < 8) {
-        const error = new Error("Password must be at least 8 characters.");
+        const error = new Error("Validation error");
         error.status = 400;
+        error.errors = { password: "Password must be at least 8 characters." };
         throw error;
     };
 
@@ -45,5 +47,22 @@ export const registerService = async ({ name, lastName, nid, age, phoneNumber, e
     const newUser = await createUser({ nid, name, lastName, age, email, hashedPassword, phoneNumber });
 
     return newUser;
+
+};
+
+export const loginService = async ({ email, password }) => {
+
+    const missingFields = [];
+
+    if (!email) missingFields.push("email");
+    if (!password) missingFields.push("password");
+
+    if (missingFields.length > 0) {
+        const error = new Error(`Missing required fields: ${missingFields.join(", ")}`);
+        error.status = 400;
+        throw error;
+    };
+
+    
 
 };

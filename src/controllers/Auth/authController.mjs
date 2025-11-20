@@ -20,3 +20,24 @@ export const registerController = async (req, res, next) => {
   };
 
 };
+
+export const loginController = async (req, res, next) => {
+
+  try {
+
+    const { email, password  } = req.body;
+
+    const result = await loginService({  email, password });
+
+    res.status(201).json({
+      message: 'User successfully authenticated.',
+      usuario: result
+    });
+
+  } catch (error) {
+
+    next(error); 
+
+  };
+
+};

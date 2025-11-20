@@ -1,25 +1,20 @@
 export default (err, req, res, next) => {
+    
+    console.error("❌ ERROR:", err);
 
-    console.error('❌ ERROR:', err);
+    const status = err.status || 500;
 
-    const statusCode = err.status || 500;
+    if (err.errors) {
 
-    let message = err.message || 'Internal server error';
-
-    const response = {
-        success: false,
-        message,
-    };
-
-    if (process.env.NODE_ENV !== 'production') {
-
-        response.error = {
-            name: err.name,
-            stack: err.stack,
-        };
+        return res.status(status).json({
+            message: err.message || "Validation error",
+            errors: err.errors
+        });
 
     };
 
-    res.status(statusCode).json(response);
+    return res.status(status).json({
+        message: err.message || "Internal server error"
+    });
 
 };
